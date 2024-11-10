@@ -134,30 +134,10 @@
                     </div>
                     <div>
                         <a href="{{route('create_user')}}" class="btn btn-sm btn-success">Tambah User</a>
-                        <a href="{{ route('export_users') }}" class="btn btn-sm btn-primary">Export Data</a>
                         <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#importModal">Import Data</button>
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exportModal">Export Data</button>
                     </div>
-                    <!-- Import Modal/ Tampilan setelah menekan Btn Import Data  -->
-                    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="importModalLabel">Import Data</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="{{ route('import_users') }}" method="POST" enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="mb-3">
-                                            <label for="file" class="form-label">Choose file</label>
-                                            <input type="file" class="form-control" id="file" name="file" required>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Import</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
             <div class="card-body">
@@ -186,7 +166,7 @@
     </td>
 </tr>
 
-<!-- Modal -->
+<!-- Modal Delete User-->
 <div class="modal fade" id="modal-delete-{{ $u->id }}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ $u->id }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -200,6 +180,50 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm" data-bs-dismiss="modal">Batal</button>
                 <a href="{{route('deluser', $u->id)}}" class="btn btn-sm btn-danger delete-btn">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Import Modal/ Tampilan setelah menekan Btn Import Data  -->
+<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="importModalLabel">Import Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('import_users') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Choose file</label>
+                        <input type="file" class="form-control" id="file" name="file" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Export Modal -->
+<div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exportModalLabel">Export Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('export_users') }}" method="GET">
+                    <div class="mb-3">
+                        <label for="format" class="form-label">Choose format</label>
+                        <select class="form-select" id="format" name="format" required>
+                            <option value="pdf">PDF</option>
+                            <option value="csv">CSV</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Export</button>
+                </form>
             </div>
         </div>
     </div>
