@@ -134,6 +134,29 @@
                     </div>
                     <div>
                         <a href="{{route('create_user')}}" class="btn btn-sm btn-success">Tambah User</a>
+                        <a href="{{ route('export_users') }}" class="btn btn-sm btn-primary">Export Data</a>
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#importModal">Import Data</button>
+                    </div>
+                    <!-- Import Modal/ Tampilan setelah menekan Btn Import Data  -->
+                    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="importModalLabel">Import Data</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('import_users') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="mb-3">
+                                            <label for="file" class="form-label">Choose file</label>
+                                            <input type="file" class="form-control" id="file" name="file" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Import</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -46,3 +46,6 @@ Route::put('/update_smartguide/{id}', [DashboardController::class,'update_smartg
 Route::get('/delete_smartguide/{id}', [DashboardController::class,'destroy_smartguide'])->name('delsmartguide');
 Route::get('/show_artikel/{id}', [DashboardController::class,'show_artikel'])->name('lihat_artikel');
 Route::get('/show_smartguide/{id}', [DashboardController::class,'show_smartguide'])->name('lihat_smartguide');
+
+Route::post('/import-users', [DashboardController::class, 'importUsers'])->name('import_users');
+Route::get('/export-users', [DashboardController::class, 'exportUsers'])->name('export_users');
