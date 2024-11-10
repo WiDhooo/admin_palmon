@@ -12,6 +12,11 @@ use App\Models\Pengguna;
 
 use App\Models\Smartguide;
 
+//Import Export
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UsersImport;
+use App\Exports\UsersExport;
+
 class DashboardController extends Controller
 {
     //
@@ -414,6 +419,21 @@ class DashboardController extends Controller
         return redirect()->route('smartguide');
     }
 
+    public function importUsers(Request $request)
+    {
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv',
+    ]);
+
+    Excel::import(new UsersImport, $request->file('file'));
+
+    return redirect()->route('user')->with('success', 'Data imported successfully.');
+    }
+
+    public function exportUsers()
+    {
+    return Excel::download(new UsersExport, 'users.xlsx');
+    }
 
 }
 

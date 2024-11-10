@@ -15,7 +15,11 @@ class UsersImport implements ToModel
     public function model(array $row)
     {
         return new User([
-            //
+            'name' => $row[0],
+            'email' => $row[1],
+            'no_telp' => $row[2],
+            'alamat' => $row[3],
+            'password' => bcrypt('password'), // Set default password or handle it as needed
         ]);
     }
 }
