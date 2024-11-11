@@ -12,6 +12,13 @@ use App\Models\Pengguna;
 
 use App\Models\Smartguide;
 
+//Import Export
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UsersImport;
+use App\Exports\UsersExport;
+use PDF;
+
+
 class DashboardController extends Controller
 {
     //
@@ -414,6 +421,32 @@ class DashboardController extends Controller
         return redirect()->route('smartguide');
     }
 
+    public function importUsers(Request $request)
+    {
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv',
+    ]);
 
+    Excel::import(new UsersImport, $request->file('file'));
+
+    return redirect()->route('user')->with('success', 'Data imported successfully.');
+    }
+
+    public function exportUsers(Request $request)
+    {
+        $format = $request->input('format');
+
+        if ($format == 'pdf') {
+            $users = User::all();
+            $pdf = PDF::loadView('exports.users', compact('users'));
+            return $pdf->download('users.pdf');
+        } elseif ($format == 'csv') {
+            return Excel::download(new UsersExport, 'users.csv');
+        }
+
+        return redirect()->route('user')->with('error', 'Invalid export format selected.');
+    }
+
+    
 }
 
