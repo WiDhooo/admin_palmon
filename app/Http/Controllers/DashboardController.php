@@ -423,13 +423,23 @@ class DashboardController extends Controller
 
     public function importUsers(Request $request)
     {
-    $request->validate([
-        'file' => 'required|mimes:xlsx,xls,csv',
-    ]);
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+        
+        \Log::info('Importing users from file: ' . $request->file('file')->getClientOriginalName());
+        
+        try {
+            Excel::import(new UsersImport, $request->file('file'));
+            \Log::info('Import successful');
+        } catch (\Exception $e) {
+            \Log::error('Import failed: ' . $e->getMessage());
+            return redirect()->route('user')->with('error', 'Data import failed.');
+        }
+        
+        Excel::import(new UsersImport, $request->file('file'));
 
-    Excel::import(new UsersImport, $request->file('file'));
-
-    return redirect()->route('user')->with('success', 'Data imported successfully.');
+        return redirect()->route('user')->with('success', 'Data imported successfully.');
     }
 
     public function exportUsers(Request $request)
@@ -437,7 +447,7 @@ class DashboardController extends Controller
         $format = $request->input('format');
 
         if ($format == 'pdf') {
-            $users = User::all();
+            $users = Pengguna::select('id', 'nama', 'email', 'no_telp', 'alamat')->get();
             $pdf = PDF::loadView('exports.users', compact('users'));
             return $pdf->download('users.pdf');
         } elseif ($format == 'csv') {
