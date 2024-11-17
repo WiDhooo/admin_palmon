@@ -22,9 +22,6 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-
-
 Route::get('/',[SignController::class, 'index']);
 Route::get('/register',[RegisterController::class, 'regis']);
 Route::post('/save', [RegisterController::class,'save'])->name('simpan_reg');
