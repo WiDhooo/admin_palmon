@@ -27,7 +27,6 @@ class PenggunaController extends Controller
         $request->validate([
             'nama' => 'required|max:255',
             'email' => 'required|email|unique:users,email', // Sesuaikan nama tabel jika perlu
-            'password' => 'required|min:6',
             'no_telp' => 'required|max:15', // Tambahkan validasi jika kolom ini ada
             'alamat' => 'required|max:255', // Tambahkan validasi jika kolom ini ada
         ]);
@@ -61,10 +60,11 @@ class PenggunaController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $pengguna = Pengguna::findOrFail($id);
         //
         $request->validate([
             'nama' => 'required|max:255',
-            'email' => 'required|email|unique:users,email,' . $id, // Sesuaikan nama tabel jika perlu
+            'email' => 'required|email|unique:user,email,'. $pengguna->id,// Sesuaikan nama tabel jika perlu
             'no_telp' => 'required|max:15', // Tambahkan validasi jika kolom ini ada
             'alamat' => 'required|max:255', // Tambahkan validasi jika kolom ini ada
         ]);
@@ -79,6 +79,14 @@ class PenggunaController extends Controller
         $pengguna->no_telp = $request->no_telp; // Tambahkan jika kolom ini ada
         $pengguna->alamat = $request->alamat;   // Tambahkan jika kolom ini ada
         $pengguna->save();
+
+        //update data artikel
+        Pengguna::where('id',$id)->update([
+            'nama'=>$request->nama,
+            'email'=>$request->email,
+            'no_telp'=>$request->no_telp,
+            'alamat'=>$request->alamat,
+        ]);
 
         return response()->json(['message' => 'Pengguna updated successfully', 'data' => $pengguna]);
 

@@ -16,7 +16,7 @@ use App\Models\Smartguide;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\UsersImport;
 use App\Exports\UsersExport;
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 
 class DashboardController extends Controller
