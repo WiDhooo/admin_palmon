@@ -146,7 +146,7 @@
                         
 
                         <div class="card mb-4">
-                                <form action="{{ route('simpan_artikel')}}" method="POST" enctype="multipart/form-data">
+                                <form action="http://127.0.0.1:8001/api/artikel" method="POST" enctype="multipart/form-data">
                                     @csrf
                                 <div class="form-group">
                                         <label for="judul">Judul:</label>

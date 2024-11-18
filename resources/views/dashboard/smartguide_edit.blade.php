@@ -146,7 +146,7 @@
                         
 
                         <div class="card mb-4">
-                                <form action="{{ route('simpaneditan_smartguide', $hasil_query['id'])}}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ url('http://127.0.0.1:8001/api/guides/' . $hasil_query['id']) }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group">
