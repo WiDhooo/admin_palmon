@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Artikel;
+use GuzzleHttp\Client;
 
 class ArtikelController extends Controller
 {
     //
+    private $client;
+
+    public function __construct()
+    {
+        $this->client = new Client(['base_uri' => 'http://127.0.0.1:8001/api/']);
+    }
     public function artikel() {
-        $data_artikel = Artikel::all();
+        $response = $this->client->get('artikel');
+        $data_artikel = json_decode($response->getBody()->getContents(), true);
+
         return view("dashboard.artikel", compact('data_artikel'));
     }
 
@@ -25,43 +34,40 @@ class ArtikelController extends Controller
     public function store_artikel(Request $request)
     {
         //
-         // melakukan validasi data
-         $request->validate([
+        $request->validate([
             'judul' => 'required|max:500',
             'isi' => 'required',
-            'foto' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-        ],
-        [
-            'judul.required' => 'Judul wajib diisi',
-            'judul.max' => 'Judul maksimal 500 karakter',
-            'isi.required' => 'Isi wajib diisi',
-            'foto.required' => 'Foto wajib diisi',
-            'foto.max' => 'Foto maksimal 2 MB',
-            'foto.mimes' => 'File ekstensi hanya bisa jpg,png,jpeg,gif, svg',
-            'foto.image' => 'File harus berbentuk image'
+            'nama_pembuat' => 'required|max:255',
+            'gambar' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
-        //jika file foto ada yang terupload
-        if(!empty($request->foto)){
-            //maka proses berikut yang dijalankan
-            $fileName = 'foto-'.uniqid().'.'.$request->foto->extension();
-            //setelah tau fotonya sudah masuk maka tempatkan ke public
-            $request->foto->move(public_path('gambars'), $fileName);
-        } else {
-            $fileName = 'noimage.jpeg';
-        }
-        
-        $name = session('name');
-            
-            //tambah data artikel
-            Artikel::create([
-                'nama'=>$name,
-                'judul'=>$request->judul,
-                'isi'=>$request->isi,
-                'foto'=>$fileName,
-            ]);
-            
-            return redirect()->route('artikel');
+        $multipart = [
+            [
+                'name' => 'judul',
+                'contents' => $request->judul
+            ],
+            [
+                'name' => 'isi',
+                'contents' => $request->isi
+            ],
+            [
+                'name' => 'nama_pembuat',
+                'contents' => $request->nama_pembuat
+            ],
+            [
+                'name' => 'gambar',
+                'contents' => fopen($request->file('gambar')->getPathname(), 'r'),
+                'filename' => $request->file('gambar')->getClientOriginalName()
+            ]
+        ];
+
+        $response = $this->client->post('artikel', [
+            'multipart' => $multipart
+        ]);
+
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        return redirect()->route('artikel')->with('success', 'Artikel created successfully');
     }
 
     /**
@@ -69,7 +75,9 @@ class ArtikelController extends Controller
      */
     public function show_artikel(string $id)
     {
-        $article = Artikel::find($id);
+        $response = $this->client->get("artikel/{$id}");
+        $article = json_decode($response->getBody()->getContents(), true);
+
         return view('dashboard.show_artikel', compact('article'));
     }
 
@@ -81,8 +89,11 @@ class ArtikelController extends Controller
         //
         //echo "ini method edit";
         //echo $id;
-        $hasil_query = Artikel::where('id',$id)->first();
-        return view('dashboard.artikel_edit',compact('hasil_query'));
+        $response = $this->client->get("artikel/{$id}");
+        $hasil_query = json_decode($response->getBody()->getContents(), true);
+
+        return view('dashboard.artikel_edit', compact('hasil_query'));
+ 
     }
 
     /**
@@ -94,50 +105,40 @@ class ArtikelController extends Controller
         $request->validate([
             'judul' => 'required|max:500',
             'isi' => 'required',
-            'foto' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-        ],
-        [
-            'judul.required' => 'Judul wajib diisi',
-            'judul.max' => 'Judul maksimal 500 karakter',
-            'isi.required' => 'Isi wajib diisi',
-            'foto.required' => 'Foto wajib diisi',
-            'foto.max' => 'Foto maksimal 2 MB',
-            'foto.mimes' => 'File ekstensi hanya bisa jpg,png,jpeg,gif, svg',
-            'foto.image' => 'File harus berbentuk image'
+            'nama_pembuat' => 'required|max:255',
+            'foto' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
-        
-        
-            //foto lama
-            $fotoLama = Artikel::where('id',$id)->get();
-            foreach($fotoLama as $f1){
-                $fotoLama = $f1->foto;
-            }
-        
-            //jika foto sudah ada yang terupload
-            if(!empty($request->foto)){
-                //maka proses selanjutnya
-                if(!empty($fotoLama->foto)) unlink(public_path('gambars'.$fotoLama->foto));
-                //proses ganti foto
-                $fileName = 'foto-'.$request->id.'.'.$request->foto->extension();
-                //setelah tau fotonya sudah masuk maka tempatkan ke public
-                $request->foto->move(public_path('gambars'), $fileName);
-            } else{
-                $fileName = $fotoLama;
-            }
 
-            $name = session('name');
-        
-            //update data artikel
-            Artikel::where('id',$id)->update([
-                'nama'=>$name,
-                'judul'=>$request->judul,
-                'isi'=>$request->isi,
-                'foto'=>$fileName,
-            ]);
-                    
-            return redirect()->route('artikel');
+        $multipart = [
+            [
+                'name' => 'judul',
+                'contents' => $request->judul
+            ],
+            [
+                'name' => 'isi',
+                'contents' => $request->isi
+            ],
+            [
+                'name' => 'nama',
+                'contents' => $request->nama_pembuat
+            ]
+        ];
 
-        //
+        if ($request->hasFile('foto')) {
+            $multipart[] = [
+                'name' => 'foto',
+                'contents' => fopen($request->file('foto')->getPathname(), 'r'),
+                'filename' => $request->file('foto')->getClientOriginalName()
+            ];
+        }
+
+        $response = $this->client->put("artikel/{$id}", [
+            'multipart' => $multipart
+        ]);
+
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        return redirect()->route('artikel')->with('success', 'Artikel updated successfully');
     }
 
     /**
@@ -146,7 +147,12 @@ class ArtikelController extends Controller
     public function destroy_artikel(string $id)
     {
         //
-        Artikel::where('id',$id)->delete();
-        return redirect()->route('artikel');
+        $response = $this->client->delete("artikel/{$id}");
+
+        if ($response->getStatusCode() == 200) {
+            return redirect()->route('artikel')->with('success', 'Artikel deleted successfully');
+        } else {
+            return redirect()->route('artikel')->with('error', 'Failed to delete artikel');
+        }
     }
 }

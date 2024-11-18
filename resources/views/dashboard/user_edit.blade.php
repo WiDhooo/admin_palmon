@@ -146,33 +146,33 @@
                         
 
                         <div class="card mb-4">
-                        <form action="{{ route('simpaneditan_user' ,$hasil_query->id)}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('simpaneditan_user' ,$hasil_query['id'])}}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group">
                                         <label for="nama">Nama:</label>
-                                        <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ $hasil_query->nama }}">
+                                        <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ $hasil_query['nama'] }}">
                                         @error('nama')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Email:</label>
-                                        <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ $hasil_query->email }}" class="form-control form-control-xl">
+                                        <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ $hasil_query['email'] }}" class="form-control form-control-xl">
                                             @error('email')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="no_telp">Nomor Telepon:</label>
-                                        <input type="tel" class="form-control @error('no_telp') is-invalid @enderror" id="no_telp" name="no_telp" value="{{ $hasil_query->no_telp }}">
+                                        <input type="tel" class="form-control @error('no_telp') is-invalid @enderror" id="no_telp" name="no_telp" value="{{ $hasil_query['no_telp'] }}">
                                         @error('no_telp')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="alamat">Alamat:</label>
-                                        <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat">{{ $hasil_query->alamat }}</textarea>
+                                        <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat">{{ $hasil_query['alamat'] }}</textarea>
                                         @error('alamat')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

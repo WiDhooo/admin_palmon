@@ -163,8 +163,11 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label for="foto">Foto Thumbnail:</label>
-                                        <input type="file" class="form-control" id="foto" name="foto">
+                                        <label for="gambar">Foto Thumbnail:</label>
+                                        <input type="file" class="form-control @error('gambar') is-invalid @enderror" id="gambar" name="gambar">
+                                        @error('gambar')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <button type="submit" class="btn btn-primary mt-4">Submit</button>
                                 </form>

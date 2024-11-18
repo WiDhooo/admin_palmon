@@ -151,23 +151,23 @@
                     @foreach ($data_artikel as $r)
 <tr>
     <td>{{ $loop->iteration }}</td>
-    <td>{{ $r->judul }}</td>
+    <td>{{ $r['judul'] }}</td>
     <td>
-        @empty($r->foto)
+        @empty($r['gambar'])
             <img src="{{ url('gambars/noimage.jpeg') }}" width="50" height="30">
         @else
-            <img src="{{ url('gambars/'.$r->foto) }}" width="50" height="30">
+            <img src="{{ url('gambars/'.$r['gambar']) }}" width="50" height="30">
         @endempty
     </td>
-    <td>{{ $r->nama }}</td>
+    <td>{{ $r['nama_pembuat'] ?? 'N/A' }}</td>
     <td>
-        <a href="{{route('edit_artikel', $r->id)}}" class="btn btn-sm btn-warning">Edit</a>
-        <button type="button" class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$r->id}}">Delete</button>
+        <a href="{{route('edit_artikel', $r['id'])}}" class="btn btn-sm btn-warning">Edit</a>
+        <button type="button" class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$r['id']}}">Delete</button>
     </td>
 </tr>
 
 <!-- Modal -->
-<div class="modal fade" id="modal-delete-{{$r->id}}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ $r->id }}" aria-hidden="true">
+<div class="modal fade" id="modal-delete-{{$r['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ $r['id'] }}" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -179,7 +179,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm" data-bs-dismiss="modal">Batal</button>
-        <a href="{{route('delartikel', $r->id)}}" class="btn btn-sm btn-danger delete-btn">Delete</a>
+        <a href="{{route('delartikel', $r['id'])}}" class="btn btn-sm btn-danger delete-btn">Delete</a>
       </div>
     </div>
   </div>

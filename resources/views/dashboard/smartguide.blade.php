@@ -139,6 +139,7 @@
                             <th>Judul SmartGuide</th>
                             <th>Foto</th>
                             <th>Nama</th>
+                            <th>Tag</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -146,23 +147,24 @@
                     @foreach ($data_smartguide as $s)
 <tr>
     <td>{{ $loop->iteration }}</td>
-    <td>{{ $s->judul }}</td>
+    <td>{{ $s['judul'] }}</td>
     <td>
-        @empty($s->foto)
+        @empty($s['gambar'])
             <img src="{{ url('gambars/noimage.jpeg') }}" width="50" height="30">
         @else
-            <img src="{{ url('gambars/'.$s->foto) }}" width="50" height="30">
+            <img src="{{ url('gambars/'.$s['gambar']) }}" width="50" height="30">
         @endempty
     </td>
-    <td>{{ $s->nama }}</td>
+    <td>{{ $s['nama_pembuat'] ?? 'N/A'}}</td>
+    <td>{{ $s['tag'] ?? 'N/A' }}</td>
     <td>
-        <a href="{{route('edit_smartguide', $s->id)}}" class="btn btn-sm btn-warning">Edit</a>
-        <button type="button" class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$s->id}}">Delete</button>
+        <a href="{{route('edit_smartguide', $s['id'])}}" class="btn btn-sm btn-warning">Edit</a>
+        <button type="button" class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$s['id']}}">Delete</button>
     </td>
 </tr>
 
 <!-- Modal -->
-<div class="modal fade" id="modal-delete-{{$s->id}}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ $s->id }}" aria-hidden="true">
+<div class="modal fade" id="modal-delete-{{$s['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ $s['id']}}" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -174,7 +176,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm" data-bs-dismiss="modal">Batal</button>
-        <a href="{{route('delsmartguide', $s->id)}}" class="btn btn-sm btn-danger delete-btn">Delete</a>
+        <a href="{{route('delsmartguide', $s['id'])}}" class="btn btn-sm btn-danger delete-btn">Delete</a>
       </div>
     </div>
   </div>

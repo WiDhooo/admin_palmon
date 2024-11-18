@@ -146,33 +146,37 @@
                         
 
                         <div class="card mb-4">
-                                <form action="{{ route('simpaneditan_smartguide', $hasil_query->id)}}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('simpaneditan_smartguide', $hasil_query['id'])}}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group">
                                         <label for="judul">Judul:</label>
-                                        <input type="text" class="form-control @error('judul') is-invalid @enderror" id="judul" name="judul" value="{{ $hasil_query->judul }}">
+                                        <input type="text" class="form-control @error('judul') is-invalid @enderror" id="judul" name="judul" value="{{ $hasil_query['judul'] }}">
                                         @error('judul')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="isi">Isi SmartGuide:</label>
-                                        <textarea class="form-control @error('isi') is-invalid @enderror" id="isi" name="isi" rows="10">{{ $hasil_query->isi }}</textarea>
+                                        <textarea class="form-control @error('isi') is-invalid @enderror" id="isi" name="isi" rows="10">{{$hasil_query['isi']}}</textarea>
                                         @error('isi')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label for="foto">Foto Thumbnail:</label>
-                                        <input type="file" class="form-control" id="foto" name="foto">
-                                        {{-- @if(!empty($hasil_query->foto))
-                                            <img src="{{url('gambars')}}/{{$hasil_query->foto}}" alt=""class="rounded" style="width: 100%; max-width: 100px; height: auto;">
-                                        @endif --}}
-                                        @if(isset($hasil_query->foto) && !empty($hasil_query->foto))
-                                                <img src="{{ url('gambars/' . $hasil_query->foto) }}" alt="Foto Produk" class="rounded" style="width: 100%; max-width: 100px; height: auto;">
+                                        <label for="tag">Tag:</label>
+                                        <input type="text" class="form-control @error('tag') is-invalid @enderror" id="tag" name="tag" value="{{ $hasil_query['tag'] }}">
+                                        @error('tag')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                    <label for="gambar">Foto Thumbnail:</label>
+                                        <input type="file" class="form-control" id="gambar" name="gambar">
+                                        @if(isset($hasil_query['gambar']) && !empty($hasil_query['gambar']))
+                                            <img src="{{ url('gambars/' . $hasil_query['gambar']) }}" alt="Foto Smartguide" class="rounded" style="width: 100%; max-width: 100px; height: auto;">
                                         @else
-                                                <img src="{{ url('gambars/noimage.jpeg') }}" alt="No Foto" class="rounded" style="width: 100%; max-width: 100px; height: auto;">
+                                            <img src="{{ url('gambars/noimage.jpeg') }}" alt="No Foto" class="rounded" style="width: 100%; max-width: 100px; height: auto;">
                                         @endif
                 
                                     </div>

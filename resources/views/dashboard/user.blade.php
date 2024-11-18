@@ -152,21 +152,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach ($data_user as $u)
+                    @foreach ($pengguna as $u)
 <tr>
     <td>{{ $loop->iteration }}</td>
-    <td>{{ $u->nama }}</td>
-    <td>{{ $u->email }}</td>
-    <td>{{ $u->no_telp }}</td>
-    <td>{{ $u->alamat }}</td>
+    <td>{{ $u['nama'] }}</td>
+    <td>{{ $u['email'] }}</td>
+    <td>{{ $u['no_telp'] }}</td>
+    <td>{{ $u['alamat'] }}</td>
     <td>
-        <a href="{{route('edit_user', $u->id)}}" class="btn btn-sm btn-warning">Edit</a>
-        <button type="button" class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $u->id }}">Delete</button>
+        <a href="{{route('edit_user', $u['id'])}}" class="btn btn-sm btn-warning">Edit</a>
+        <button type="button" class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $u['id'] }}">Delete</button>
     </td>
 </tr>
 
 <!-- Modal Delete User-->
-<div class="modal fade" id="modal-delete-{{ $u->id }}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ $u->id }}" aria-hidden="true">
+<div class="modal fade" id="modal-delete-{{ $u['id'] }}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ $u['id'] }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -178,7 +178,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm" data-bs-dismiss="modal">Batal</button>
-                <a href="{{route('deluser', $u->id)}}" class="btn btn-sm btn-danger delete-btn">Delete</a>
+                <a href="{{route('deluser', $u['id'])}}" class="btn btn-sm btn-danger delete-btn">Delete</a>
             </div>
         </div>
     </div>
