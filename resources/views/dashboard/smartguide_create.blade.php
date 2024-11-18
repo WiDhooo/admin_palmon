@@ -101,9 +101,8 @@
                 </a>
             </li>
 
-            <li
-                class="sidebar-item  ">
-                <a href="/Signout" class='sidebar-link'>
+            <li class="sidebar-item">
+                <a href="#" class='sidebar-link' data-bs-toggle="modal" data-bs-target="#logoutModal">
                     <i class="bi bi-signpost"></i>
                     <span>Logout</span>
                 </a>
@@ -112,6 +111,25 @@
         </ul>
     </div>
 </div>
+<!-- Modal Logout -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to logout?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="{{ route('logout') }}" class="btn btn-primary">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
         </div>
         <div id="main">
             <header class="mb-3">
@@ -128,7 +146,7 @@
                         
 
                         <div class="card mb-4">
-                                <form action="{{ route('simpan_smartguide')}}" method="POST" enctype="multipart/form-data">
+                                <form action="http://127.0.0.1:8001/api/guides" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">
                                         <label for="judul">Judul:</label>
@@ -145,8 +163,18 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label for="foto">Foto Thumbnail:</label>
-                                        <input type="file" class="form-control" id="foto" name="foto">
+                                        <label for="tag">Tag:</label>
+                                        <input type="text" class="form-control @error('tag') is-invalid @enderror" id="tag" name="tag" value="{{ old('tag') }}">
+                                        @error('tag')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                    <label for="gambar">Foto:</label>
+                                        <input type="file" class="form-control @error('gambar') is-invalid @enderror" id="gambar" name="gambar">
+                                        @error('gambar')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <button type="submit" class="btn btn-primary mt-4">Submit</button>
                                 </form>

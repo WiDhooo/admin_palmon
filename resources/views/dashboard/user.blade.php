@@ -102,9 +102,8 @@
                 </a>
             </li>
 
-            <li
-                class="sidebar-item  ">
-                <a href="/Signout" class='sidebar-link'>
+            <li class="sidebar-item">
+                <a href="#" class='sidebar-link' data-bs-toggle="modal" data-bs-target="#logoutModal">
                     <i class="bi bi-signpost"></i>
                     <span>Logout</span>
                 </a>
@@ -134,8 +133,8 @@
                     </div>
                     <div>
                         <a href="{{route('create_user')}}" class="btn btn-sm btn-success">Tambah User</a>
-                        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#importModal">Import Data</button>
-                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exportModal">Export Data</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#importModal">Import User</button>
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exportModal">Export User</button>
                     </div>
                     
                 </div>
@@ -153,21 +152,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach ($data_user as $u)
+                    @foreach ($pengguna as $u)
 <tr>
     <td>{{ $loop->iteration }}</td>
-    <td>{{ $u->nama }}</td>
-    <td>{{ $u->email }}</td>
-    <td>{{ $u->no_telp }}</td>
-    <td>{{ $u->alamat }}</td>
+    <td>{{ $u['nama'] }}</td>
+    <td>{{ $u['email'] }}</td>
+    <td>{{ $u['no_telp'] }}</td>
+    <td>{{ $u['alamat'] }}</td>
     <td>
-        <a href="{{route('edit_user', $u->id)}}" class="btn btn-sm btn-warning">Edit</a>
-        <button type="button" class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $u->id }}">Delete</button>
+        <a href="{{route('edit_user', $u['id'])}}" class="btn btn-sm btn-warning">Edit</a>
+        <button type="button" class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $u['id'] }}">Delete</button>
     </td>
 </tr>
 
 <!-- Modal Delete User-->
-<div class="modal fade" id="modal-delete-{{ $u->id }}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ $u->id }}" aria-hidden="true">
+<div class="modal fade" id="modal-delete-{{ $u['id'] }}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ $u['id'] }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -179,7 +178,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm" data-bs-dismiss="modal">Batal</button>
-                <a href="{{route('deluser', $u->id)}}" class="btn btn-sm btn-danger delete-btn">Delete</a>
+                <a href="{{route('deluser', $u['id'])}}" class="btn btn-sm btn-danger delete-btn">Delete</a>
             </div>
         </div>
     </div>
@@ -228,6 +227,25 @@
         </div>
     </div>
 </div>
+<!-- Modal Logout -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to logout?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="{{ route('logout') }}" class="btn btn-primary">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endforeach
 
 

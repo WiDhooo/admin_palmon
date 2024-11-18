@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\User;
+use App\Models\Pengguna;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
@@ -13,7 +13,7 @@ class UsersExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        return User::all();
+        return Pengguna::all();
     }
     /**
      * Return the headings for the exported file.
@@ -24,11 +24,10 @@ class UsersExport implements FromCollection, WithHeadings
     {
         return [
             'ID',
-            'Name',
+            'Nama',
             'Email',
-            'Email Verified At',
-            'Created At',
-            'Updated At',
+            'No Telepon',
+            'Alamat',
         ];
     }
     

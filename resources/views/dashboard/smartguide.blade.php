@@ -98,9 +98,8 @@
                 </a>
             </li>
 
-            <li
-                class="sidebar-item  ">
-                <a href="/Signout" class='sidebar-link'>
+            <li class="sidebar-item">
+                <a href="#" class='sidebar-link' data-bs-toggle="modal" data-bs-target="#logoutModal">
                     <i class="bi bi-signpost"></i>
                     <span>Logout</span>
                 </a>
@@ -118,7 +117,7 @@
             
 <div class="page-heading">
     <h3>SmartGuide</h3>
-</div> 
+</div>
 <div id="auth">
     <div class="constrainer">
         <div class="card mb-4">
@@ -140,6 +139,7 @@
                             <th>Judul SmartGuide</th>
                             <th>Foto</th>
                             <th>Nama</th>
+                            <th>Tag</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -147,23 +147,24 @@
                     @foreach ($data_smartguide as $s)
 <tr>
     <td>{{ $loop->iteration }}</td>
-    <td>{{ $s->judul }}</td>
+    <td>{{ $s['judul'] }}</td>
     <td>
-        @empty($s->foto)
+        @empty($s['gambar'])
             <img src="{{ url('gambars/noimage.jpeg') }}" width="50" height="30">
         @else
-            <img src="{{ url('gambars/'.$s->foto) }}" width="50" height="30">
+            <img src="{{ url('gambars/'.$s['gambar']) }}" width="50" height="30">
         @endempty
     </td>
-    <td>{{ $s->nama }}</td>
+    <td>{{ $s['nama_pembuat'] ?? 'N/A'}}</td>
+    <td>{{ $s['tag'] ?? 'N/A' }}</td>
     <td>
-        <a href="{{route('edit_smartguide', $s->id)}}" class="btn btn-sm btn-warning">Edit</a>
-        <button type="button" class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$s->id}}">Delete</button>
+        <a href="{{route('edit_smartguide', $s['id'])}}" class="btn btn-sm btn-warning">Edit</a>
+        <button type="button" class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#modal-delete-{{$s['id']}}">Delete</button>
     </td>
 </tr>
 
 <!-- Modal -->
-<div class="modal fade" id="modal-delete-{{$s->id}}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ $s->id }}" aria-hidden="true">
+<div class="modal fade" id="modal-delete-{{$s['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel-{{ $s['id']}}" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -175,11 +176,30 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm" data-bs-dismiss="modal">Batal</button>
-        <a href="{{route('delsmartguide', $s->id)}}" class="btn btn-sm btn-danger delete-btn">Delete</a>
+        <a href="{{route('delsmartguide', $s['id'])}}" class="btn btn-sm btn-danger delete-btn">Delete</a>
       </div>
     </div>
   </div>
 </div>
+<!-- Modal Logout -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to logout?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="{{ route('logout') }}" class="btn btn-primary">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endforeach
 
     <script src="assets/static/js/components/dark.js"></script>

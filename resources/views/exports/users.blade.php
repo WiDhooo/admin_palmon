@@ -22,20 +22,20 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
+                <th>Nama</th>
                 <th>Email</th>
-                <th>Created At</th>
-                <th>Updated At</th>
+                <th>No Telepon</th>
+                <th>Alamat</th>
             </tr>
         </thead>
         <tbody>
             @foreach($users as $user)
                 <tr>
                     <td>{{ $user->id }}</td>
-                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->nama }}</td>
                     <td>{{ $user->email }}</td>
-                    <td>{{ $user->created_at }}</td>
-                    <td>{{ $user->updated_at }}</td>
+                    <td>{{ $user->no_telp }}</td>
+                    <td>{{ $user->alamat }}</td>
                 </tr>
             @endforeach
         </tbody>

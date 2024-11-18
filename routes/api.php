@@ -3,6 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\ArtikelController;
+use App\Http\Controllers\Api\SmartguideController;
+use App\Http\Controllers\Api\PenggunaController;
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('artikels', ArtikelController::class);
+Route::apiResource('smartguides', SmartguideController::class);
+Route::apiResource('users', PenggunaController::class);
